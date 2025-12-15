@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <title>Kopi & Pizza / Coffee & Pizza</title>
+  <style>
+    /* ===== Global Styles ===== */
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(90deg, #3E2723, #8B0000, #FF8C00);
+      margin: 0;
+      padding: 40px 25px 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    /* ===== Header ===== */
+    header {
+      margin-top: 8px 0;
+      text-align: center;
+      animation: fadeDown 1s ease forwards;
+      opacity: 0;
+    }
+
+    /* ===== Container ===== */
+    .container {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      margin-top: 0;
+      flex-wrap: wrap;
+      max-width: 1200px;
+    }
+
+    /* ===== Card ===== */
+    .card {
+      background: #FFEEDD;
+      padding: 25px;
+      border-radius: 20px;
+      border: 4px solid #B49DDC;
+      width: 380px;
+      min-width: 410px;
+      max-width: 500px;
+      text-align: center;
+      flex: none;
+      box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.25),
+        0 24px 60px rgba(0, 0, 0, 0.35),
+        0 0 60px rgba(255, 170, 50, 0.4);
+      transition: all 0.35s ease;
+      opacity: 0;
+      transform: translateY(40px);
+      animation: fadeInUp 0.8s ease forwards;
+      transform-style: preserve-3d;
+      perspective: 1200px;
+    }
+
+    .card:hover {
+      transform: translateY(-15px) scale(1.08);
+      box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.35),
+        0 0 40px rgba(255, 170, 50, 0.6);
+    }
+
+    .card:nth-child(1) { animation-delay: 0.2s; }
+    .card:nth-child(2) { animation-delay: 0.4s; }
+
+    /* ===== Card Titles ===== */
+    .card h2 {
+      margin-bottom: 15px;
+      font-size: 1.6em;
+      text-shadow: 0 3px 6px rgba(0,0,0,0.15);
+      animation: popIn 0.8s ease forwards;
+    }
+
+    /* ===== Card Form Elements ===== */
+    .card select,
+    .card label {
+      display: block;
+      margin: 10px auto;
+      font-size: 1em;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* ===== Buttons ===== */
+    button {
+      margin-top: 12px;
+      background: #FF5733;
+      border: none;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.25s;
+    }
+    button:hover {
+      background: #e94e2f;
+      transform: scale(1.08);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      margin-top: auto;
+      font-size: 15px;
+      padding: 25px;
+      text-align: center;
+      color: #dad3d3;
+      font-style: italic;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards;
+    }
+
+    /* ===== Language Toggle Button ===== */
+    #langToggle {
+      position: fixed;
+      top: 5px;
+      right: 20px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 25px;
+      background: #333;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.25s;
+    }
+    #langToggle:hover {
+      background: #555;
+      transform: scale(1.08);
+    }
+
+    /* ===== Special Boxes ===== */
+    #totalBox,
+    #pizzaTotalBox {
+      margin-top: 20px;
+      font-weight: bold;
+      color: purple;
+      background: #fff3f3;
+      padding: 10px 16px;
+      border-radius: 12px;
+      display: inline-block;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    /* ===== Back to Top Button ===== */
+    #backToTop {
+      display: inline-block !important;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 10px 15px;
+      font-size: 20px;
+      border-radius: 50%;
+      border: none;
+      background: #333;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* ===== Site Title ===== */
+    #siteTitle {
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      margin: 12px 0;
+      padding: 8px 16px;
+      color: rgb(238, 190, 238);
+      position: relative;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+      text-shadow:
+        0 1px 0 rgba(0,0,0,0.18),
+        0 2px 0 rgba(0,0,0,0.16),
+        0 3px 0 rgba(0,0,0,0.14),
+        0 4px 0 rgba(0,0,0,0.12),
+        0 5px 0 rgba(0,0,0,0.10),
+        0 6px 0 rgba(0,0,0,0.08),
+        0 8px 14px rgba(0,0,0,0.18);
+    }
+
+    /* ===== Coffee & Pizza Menus ===== */
+    #coffeeMenu,
+    #pizzaMenu {
+      font-weight: bold;
+      font-family: "Ink Free", cursive;
+      font-size: 1.1rem;
+      background: linear-gradient(135deg, #fff8dc, #ffe4b5);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      cursor: pointer;
+    }
+    #coffeeMenu:hover,
+    #pizzaMenu:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Titles */
+    #coffeeTitle,
+    #pizzaTitle {
+      font-family: "Ink Free", cursive;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #8B0000;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+      margin-bottom: 0.5rem;
+      animation: fadeInTitle 1s ease-in-out;
+    }
+
+    /* ===== Animations ===== */
+    @keyframes fadeInUp { from { opacity:0; transform:translateY(40px);} to {opacity:1; transform:translateY(0);} }
+    @keyframes fadeDown { from { opacity:0; transform:translateY(-20px);} to {opacity:1; transform:translateY(0);} }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+    @keyframes popIn { 0% { transform: scale(0.9); opacity:0;} 100% { transform: scale(1); opacity:1;} }
+    @keyframes fadeInTitle { 0% {opacity:0; transform:translateY(-10px);} 100% {opacity:1; transform:translateY(0);} }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <h1 id="siteTitle">☕ Kopi & Pizza . كوڤي & ڤيززا 🍕</h1>
+</header>
+
+<main class="container">
+  <!-- Coffee -->
+  <section class="card coffee">
+    <img src="kopi.gif" alt="Coffee" />
+    <h2 id="coffeeTitle"></h2>
+    <div id="coffeeMenu"></div>
+    <br>
+    <label id="drinkLabel"></label>
+    <select id="drinkSelect"></select>
+    <div>
+      <label><input type="checkbox" id="sugar" value="1"> <span id="sugarText"></span></label>
+      <label><input type="checkbox" id="milk" value="1"> <span id="milkText"></span></label>
+    </div>
+    <button id="calcBtn"></button>
+    <div id="totalBox"><span id="totalLabel"></span> <span id="totalValue">RM0</span></div>
+  </section>
+
+  <!-- Pizza -->
+  <section class="card pizza">
+    <img src="pizza.gif" alt="Pizza" />
+    <h2 id="pizzaTitle"></h2>
+    <div id="pizzaMenu"></div>
+    <br>
+    <label id="sizeLabel"></label>
+    <select id="pizzaSize"></select>
+    <div>
+      <label><input type="checkbox" id="topping" value="2"> <span id="toppingText"></span></label>
+      <label><input type="checkbox" id="cheese" value="1"> <span id="cheeseText"></span></label>
+    </div>
+    <button id="pizzaCalcBtn"></button>
+    <div id="pizzaTotalBox"><span id="pizzaTotalLabel"></span> <span id="pizzaTotalValue">RM0</span></div>
+  </section>
+</main>
+
+<button id="backToTop">↑</button>
+<button id="langToggle"></button>
+
+<footer>
+  <p id="footer"></p>
+</footer>
+
+<script>
+let currentLang = "ms";
+const languageTexts = {
+  ms: {
+    toggle: "→ English",
+    siteTitle: "☕ Kopi & Pizza . كوڤي & ڤيززا 🍕",
+    coffeeTitle: "☕ Kedai Kopi ☕",
+    coffeeMenu: "Espresso RM7 | Latte RM6 | Cappuccino RM5",
+    drinkLabel: "Pilih minuman:",
+    drinkOptions: ["-- Pilih Minuman --","Espresso RM7","Latte RM6","Cappuccino RM5"],
+    sugarText: "+ RM1 Gula",
+    milkText: "+ RM1 Susu",
+    calcBtn: "Kira Bil",
+    totalLabel: "Jumlah:",
+    pizzaTitle: "🍕 Kedai Pizza 🍕",
+    pizzaMenu: "Kecil RM15 | Sederhana RM20 | Besar RM25",
+    sizeLabel: "Pilih saiz pizza:",
+    sizeOptions: ["-- Pilih Saiz --","Kecil RM15","Sederhana RM20","Besar RM25"],
+    toppingText: "+ RM2 Topping",
+    cheeseText: "+ RM1 Keju",
+    pizzaCalcBtn: "Kira Bil",
+    pizzaTotalLabel: "Jumlah:",
+    footer: "Direka khas dengan ❤️ oleh Koleksi 77",
+    speechTotal: "Jumlah ialah "
+  },
+  en: {
+    toggle: "→ Melayu",
+    siteTitle: "☕ Coffee & Pizza 🍕",
+    coffeeTitle: "☕ Coffee Shop ☕",
+    coffeeMenu: "Espresso RM7 | Latte RM6 | Cappuccino RM5",
+    drinkLabel: "Choose a drink:",
+    drinkOptions: ["-- Choose a drink --","Espresso RM7","Latte RM6","Cappuccino RM5"],
+    sugarText: "+ RM1 Sugar",
+    milkText: "+ RM1 Milk",
+    calcBtn: "Calculate Bill",
+    totalLabel: "Total:",
+    pizzaTitle: "🍕 Pizza Shop 🍕",
+    pizzaMenu: "Small RM15 | Medium RM20 | Large RM25",
+    sizeLabel: "Choose pizza size:",
+    sizeOptions: ["-- Choose --","Small RM15","Medium RM20","Large RM25"],
+    toppingText: "+ RM2 Topping",
+    cheeseText: "+ RM1 Cheese",
+    pizzaCalcBtn: "Calculate Bill",
+    pizzaTotalLabel: "Total:",
+    footer: "Crafted with ❤️ by Koleksi 77",
+    speechTotal: "Your total is "
+  }
+};
+
+function updateLanguage() {
+  const t = languageTexts[currentLang];
+  document.getElementById("langToggle").innerText = t.toggle;
+  document.getElementById("siteTitle").innerText = t.siteTitle;
+
+  // Coffee
+  document.getElementById("coffeeTitle").innerText = t.coffeeTitle;
+  document.getElementById("coffeeMenu").innerText = t.coffeeMenu;
+  document.getElementById("drinkLabel").innerText = t.drinkLabel;
+  document.getElementById("sugarText").innerText = t.sugarText;
+  document.getElementById("milkText").innerText = t.milkText;
+  document.getElementById("calcBtn").innerText = t.calcBtn;
+  document.getElementById("totalLabel").innerText = t.totalLabel;
+
+  const drinkSelect = document.getElementById("drinkSelect");
+  drinkSelect.innerHTML = "";
+  [0,7,6,5].forEach((val, i) => {
+    const opt = document.createElement("option");
+    opt.value = val;
+    opt.textContent = t.drinkOptions[i];
+    drinkSelect.appendChild(opt);
+  });
+
+  // Pizza
+  document.getElementById("pizzaTitle").innerText = t.pizzaTitle;
+  document.getElementById("pizzaMenu").innerText = t.pizzaMenu;
+  document.getElementById("sizeLabel").innerText = t.sizeLabel;
+  document.getElementById("toppingText").innerText = t.toppingText;
+  document.getElementById("cheeseText").innerText = t.cheeseText;
+  document.getElementById("pizzaCalcBtn").innerText = t.pizzaCalcBtn;
+  document.getElementById("pizzaTotalLabel").innerText = t.pizzaTotalLabel;
+
+  const pizzaSize = document.getElementById("pizzaSize");
+  pizzaSize.innerHTML = "";
+  [0,15,20,25].forEach((val, i) => {
+    const opt = document.createElement("option");
+    opt.value = val;
+    opt.textContent = t.sizeOptions[i];
+    pizzaSize.appendChild(opt);
+  });
+
+  // Footer
+  document.getElementById("footer").innerText = t.footer;
+}
+
+document.getElementById("langToggle").addEventListener("click", () => {
+  currentLang = currentLang === "ms" ? "en" : "ms";
+  updateLanguage();
+});
+
+updateLanguage();
+
+// Fungsi suara
+function speak(text) {
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = currentLang === "ms" ? "ms-MY" : "en-US";
+  speechSynthesis.speak(utter);
+}
+
+// Calculation Coffee
+document.getElementById("calcBtn").addEventListener("click", () => {
+  let total = parseInt(document.getElementById("drinkSelect").value);
+  if (document.getElementById("sugar").checked) total += 1;
+  if (document.getElementById("milk").checked) total += 1;
+  document.getElementById("totalValue").innerText = "RM" + total;
+  speak(languageTexts[currentLang].speechTotal + "RM" + total);
+});
+
+// Calculation Pizza
+document.getElementById("pizzaCalcBtn").addEventListener("click", () => {
+  let total = parseInt(document.getElementById("pizzaSize").value);
+  if (document.getElementById("topping").checked) total += 2;
+  if (document.getElementById("cheese").checked) total += 1;
+  document.getElementById("pizzaTotalValue").innerText = "RM" + total;
+  speak(languageTexts[currentLang].speechTotal + "RM" + total);
+});
+
+// Back to top
+const backToTopBtn = document.getElementById("backToTop");
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 300) backToTopBtn.style.display = "flex";
+  else backToTopBtn.style.display = "none";
+});
+backToTopBtn.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+</script>
+
+</body>
+</html>
